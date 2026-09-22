@@ -1,0 +1,22 @@
+<header class="site-header">
+  <a routerLink="/" class="brand" aria-label="Elite Innovates home" (click)="closeMenu()"><img src="/assets/logos/logo-hz-name.png" alt="Elite Innovates" /></a>
+  <button class="menu-button" type="button" aria-label="Toggle navigation" [attr.aria-expanded]="menuOpen()" (click)="menuOpen.set(!menuOpen())"><span></span><span></span><span></span></button>
+  <nav class="main-nav" [class.open]="menuOpen()" aria-label="Primary navigation">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()">Home</a>
+    <a routerLink="/services" routerLinkActive="active" (click)="closeMenu()">Our Services</a>
+    <a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About Us</a>
+    <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact Us</a>
+    <a routerLink="/portfolio" routerLinkActive="active" (click)="closeMenu()">Portfolio</a>
+  </nav>
+  <a routerLink="/contact" class="button button-primary header-cta">Let’s Talk <span>→</span></a>
+</header>
+<main><router-outlet /></main>
+<footer class="site-footer">
+  <div class="footer-main shell">
+    <div class="footer-brand"><img src="/assets/logos/logo-hz-name.png" alt="Elite Innovates" /><p>Digital products, automation and technology that move businesses forward.</p></div>
+    <div><h3>Explore</h3><a routerLink="/services">Our Services</a><a routerLink="/portfolio">Portfolio</a><a routerLink="/about">About Us</a><a routerLink="/contact">Contact Us</a></div>
+    <div><h3>Company</h3><a routerLink="/jobs">Jobs</a><a routerLink="/vision-mission">Vision &amp; Mission</a><a routerLink="/privacy-policy">Privacy Policy</a><a routerLink="/terms">Terms &amp; Conditions</a></div>
+    <div class="footer-contact"><h3>Get in touch</h3><a href="mailto:info@eliteinnovates.com">info@eliteinnovates.com</a><p>Apex Golf, Sec 1<br>New Delhi, INDIA</p></div>
+  </div>
+  <div class="footer-bottom shell"><span>© {{ year }} Elite Innovates Solutions Private Limited.</span><a href="https://eliteinnovates.com">eliteinnovates.com</a></div>
+</footer>
