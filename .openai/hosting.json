@@ -1,5 +1,8 @@
 {
   "project_id": "appgprj_6ab29226a0288191a360741d67638e99",
+  "static": {
+    "directory": "dist/eliteinnovates/browser"
+  },
   "d1": null,
   "r2": null
 }
