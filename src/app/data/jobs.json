@@ -1,0 +1,94 @@
+[
+  {
+    "slug": "full-stack-developer",
+    "title": "Full-stack Developer",
+    "department": "Engineering",
+    "skills": [
+      "Angular",
+      "APIs",
+      "Cloud"
+    ],
+    "location": "New Delhi",
+    "workplace": "Hybrid",
+    "summary": "Build dependable web applications and connected services that help businesses work smarter.",
+    "description": [
+      "Build dependable web applications and connected services that help businesses work smarter.",
+      "Work with our team across design, engineering and growth to deliver practical digital solutions for our clients."
+    ],
+    "responsibilities": [
+      "Develop responsive Angular interfaces and reusable components.",
+      "Design and integrate APIs and data services.",
+      "Write maintainable code, review changes and troubleshoot issues.",
+      "Work with designers and stakeholders to deliver useful features."
+    ],
+    "requirements": [
+      "Experience building web applications with TypeScript and Angular.",
+      "Understanding of APIs, databases and version control.",
+      "Ability to test, debug and explain technical decisions."
+    ],
+    "niceToHave": [
+      "Experience with cloud deployment and automated testing."
+    ]
+  },
+  {
+    "slug": "ui-ux-designer",
+    "title": "UI/UX Designer",
+    "department": "Design",
+    "skills": [
+      "Product design",
+      "Design systems"
+    ],
+    "location": "New Delhi",
+    "workplace": "Hybrid",
+    "summary": "Create clear, thoughtful digital experiences for websites and mobile products.",
+    "description": [
+      "Create clear, thoughtful digital experiences for websites and mobile products.",
+      "Work with our team across design, engineering and growth to deliver practical digital solutions for our clients."
+    ],
+    "responsibilities": [
+      "Translate business goals and user needs into intuitive journeys.",
+      "Create wireframes, prototypes and polished interface designs.",
+      "Build and maintain consistent design systems.",
+      "Collaborate with engineers and refine designs through feedback."
+    ],
+    "requirements": [
+      "A portfolio showing your design process and product thinking.",
+      "Experience with interface design and interactive prototyping.",
+      "Understanding of responsive layouts and accessible design."
+    ],
+    "niceToHave": [
+      "Experience with user research and usability testing."
+    ]
+  },
+  {
+    "slug": "digital-marketing-specialist",
+    "title": "Digital Marketing Specialist",
+    "department": "Marketing",
+    "skills": [
+      "Campaigns",
+      "Content",
+      "Analytics"
+    ],
+    "location": "New Delhi",
+    "workplace": "Hybrid",
+    "summary": "Help brands reach the right audiences through focused campaigns and useful content.",
+    "description": [
+      "Help brands reach the right audiences through focused campaigns and useful content.",
+      "Work with our team across design, engineering and growth to deliver practical digital solutions for our clients."
+    ],
+    "responsibilities": [
+      "Plan and coordinate digital marketing campaigns.",
+      "Create content briefs and collaborate with design teams.",
+      "Monitor campaign performance and communicate insights.",
+      "Improve landing pages and customer journeys using data."
+    ],
+    "requirements": [
+      "Experience with digital campaigns, content and analytics.",
+      "Strong writing, communication and organizational skills.",
+      "Ability to turn performance data into practical improvements."
+    ],
+    "niceToHave": [
+      "Experience with SEO and conversion optimization."
+    ]
+  }
+]

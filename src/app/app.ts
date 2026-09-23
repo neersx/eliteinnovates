@@ -1,3 +1,4 @@
+import { website } from './site.data';
 import { Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
@@ -8,6 +9,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   styleUrl: './app.css'
 })
 export class App {
+  website = website;
   menuOpen = signal(false);
   year = new Date().getFullYear();
   closeMenu() { this.menuOpen.set(false); }

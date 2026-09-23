@@ -1,22 +1,22 @@
 <header class="site-header">
-  <a routerLink="/" class="brand" aria-label="Elite Innovates home" (click)="closeMenu()"><img src="/assets/logos/logo-hz-name.png" alt="Elite Innovates" /></a>
-  <button class="menu-button" type="button" aria-label="Toggle navigation" [attr.aria-expanded]="menuOpen()" (click)="menuOpen.set(!menuOpen())"><span></span><span></span><span></span></button>
-  <nav class="main-nav" [class.open]="menuOpen()" aria-label="Primary navigation">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()">Home</a>
-    <a routerLink="/services" routerLinkActive="active" (click)="closeMenu()">Our Services</a>
-    <a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About Us</a>
-    <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact Us</a>
-    <a routerLink="/portfolio" routerLinkActive="active" (click)="closeMenu()">Portfolio</a>
+  <a routerLink="/" class="brand" [attr.aria-label]="website.copy.Elite_Innovates_home" (click)="closeMenu()"><img [src]="website.company.logo" [alt]="website.company.name" /></a>
+  <button class="menu-button" type="button" [attr.aria-label]="website.copy.Toggle_navigation" [attr.aria-expanded]="menuOpen()" (click)="menuOpen.set(!menuOpen())"><span></span><span></span><span></span></button>
+  <nav class="main-nav" [class.open]="menuOpen()" [attr.aria-label]="website.copy.Primary_navigation">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()">{{website.copy.Home}}</a>
+    <a routerLink="/services" routerLinkActive="active" (click)="closeMenu()">{{website.copy.Our_Services}}</a>
+    <a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">{{website.copy.About_Us}}</a>
+    <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">{{website.copy.Contact_Us}}</a>
+    <a routerLink="/portfolio" routerLinkActive="active" (click)="closeMenu()">{{website.copy.Portfolio}}</a>
   </nav>
-  <a routerLink="/contact" class="button button-primary header-cta">Let’s Talk <span>→</span></a>
+  <a routerLink="/contact" class="button button-primary header-cta">{{website.copy.Let_s_Talk}}<span>→</span></a>
 </header>
 <main><router-outlet /></main>
 <footer class="site-footer">
   <div class="footer-main shell">
-    <div class="footer-brand"><img src="/assets/logos/logo-hz-name.png" alt="Elite Innovates" /><p>Digital products, automation and technology that move businesses forward.</p></div>
-    <div><h3>Explore</h3><a routerLink="/services">Our Services</a><a routerLink="/portfolio">Portfolio</a><a routerLink="/about">About Us</a><a routerLink="/contact">Contact Us</a></div>
-    <div><h3>Company</h3><a routerLink="/jobs">Jobs</a><a routerLink="/vision-mission">Vision &amp; Mission</a><a routerLink="/privacy-policy">Privacy Policy</a><a routerLink="/terms">Terms &amp; Conditions</a></div>
-    <div class="footer-contact"><h3>Get in touch</h3><a href="mailto:info@eliteinnovates.com">info@eliteinnovates.com</a><p>Apex Golf, Sec 1<br>New Delhi, INDIA</p></div>
+    <div class="footer-brand"><img [src]="website.company.logo" [alt]="website.company.name" /><p>{{website.copy.Digital_products_automation_and_technology_that_move_businesses_forward}}</p></div>
+    <div><h3>{{website.copy.Explore}}</h3><a routerLink="/services">{{website.copy.Our_Services}}</a><a routerLink="/portfolio">{{website.copy.Portfolio}}</a><a routerLink="/about">{{website.copy.About_Us}}</a><a routerLink="/contact">{{website.copy.Contact_Us}}</a></div>
+    <div><h3>{{website.copy.Company}}</h3><a routerLink="/jobs">{{website.copy.Jobs}}</a><a routerLink="/vision-mission">{{website.copy.Vision_Mission}}</a><a routerLink="/privacy-policy">{{website.copy.Privacy_Policy}}</a><a routerLink="/terms">{{website.copy.Terms_Conditions}}</a></div>
+    <div class="footer-contact"><h3>{{website.copy.Get_in_touch}}</h3><a [href]="'mailto:' + website.company.email">{{website.company.email}}</a><p>{{website.copy.Apex_Golf_Sec_1}}<br>{{website.copy.New_Delhi_INDIA}}</p></div>
   </div>
-  <div class="footer-bottom shell"><span>© {{ year }} Elite Innovates Solutions Private Limited.</span><a href="https://eliteinnovates.com">eliteinnovates.com</a></div>
+  <div class="footer-bottom shell"><span>© {{ year }} {{website.company.legalName}}.</span><a [href]="website.company.url">{{website.copy.eliteinnovates_com}}</a></div>
 </footer>
