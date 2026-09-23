@@ -30,3 +30,34 @@ describe('JSON-backed careers', () => {
     expect(harness.routeNativeElement!.querySelector('a')?.getAttribute('href')).toBe('/jobs');
   });
 });
+
+describe('Portfolio discovery', () => {
+  beforeEach(() => TestBed.configureTestingModule({ providers: [provideRouter(routes)] }));
+
+  it('filters the visible work and restores the full collection', async () => {
+    const harness = await RouterTestingHarness.create('/portfolio');
+    const page = harness.routeNativeElement!;
+    const titles = () => Array.from(page.querySelectorAll('.case-title-row h3')).map(el => el.textContent?.trim());
+    const choose = async (label: string) => {
+      const button = Array.from(page.querySelectorAll<HTMLButtonElement>('.portfolio-filters button')).find(el => el.textContent?.includes(label))!;
+      button.click();
+      harness.detectChanges();
+      await harness.fixture.whenStable();
+      expect(button.getAttribute('aria-pressed')).toBe('true');
+      expect(page.querySelectorAll('.portfolio-filters button[aria-pressed="true"]').length).toBe(1);
+    };
+
+    expect(titles()).toHaveLength(4);
+    await choose('Mobile experiences');
+    expect(titles()).toEqual(['Invita Videos']);
+    expect(page.querySelector('[role="status"]')?.textContent?.trim()).toBe('1 project');
+    await choose('Business tools');
+    expect(titles()).toEqual(['Real Estate Sales Management']);
+    expect(page.querySelector('.case-footer a')?.getAttribute('href')).toBe('/contact');
+    await choose('AI & learning');
+    expect(titles()).toEqual(['Quizlo AI']);
+    await choose('All work');
+    expect(titles()).toEqual(['Dream Wedds', 'Quizlo AI', 'Invita Videos', 'Real Estate Sales Management']);
+    expect(page.querySelector('[role="status"]')?.textContent?.trim()).toBe('4 projects');
+  });
+});

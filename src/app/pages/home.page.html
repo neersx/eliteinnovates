@@ -1,0 +1,84 @@
+<div class="home-page">
+  <section class="home-hero" aria-labelledby="home-heading">
+    <div class="home-hero-inner">
+      <img class="home-hero-art" src="/assets/home/hero-art.png" alt="Elite Innovates website and mobile app displayed on a laptop and phone" width="621" height="391" fetchpriority="high">
+      <div class="home-hero-copy">
+        <span class="home-eyebrow">IDEAS / TECHNOLOGY / REAL IMPACT</span>
+        <h1 id="home-heading">Build smarter.<br><em>Grow faster.</em></h1>
+        <p>Websites, software, mobile apps and automation<br class="desktop-break"> built around your business.</p>
+        <div class="home-actions">
+          <a routerLink="/services" class="button button-primary">Explore Our Services <span aria-hidden="true">→</span></a>
+          <a routerLink="/contact" class="button button-outline">Let’s Talk</a>
+        </div>
+        <div class="home-values">
+          <div><img src="/assets/home/value-tailored.png" alt="" width="29" height="29"><span>Tailored<br>Solutions</span></div>
+          <div><img src="/assets/home/value-modern.png" alt="" width="27" height="29"><span>Modern<br>Technology</span></div>
+          <div><img src="/assets/home/value-growth.png" alt="" width="28" height="29"><span>Your Growth<br>Our Focus</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-services" aria-labelledby="services-heading">
+    <div class="home-shell">
+      <div class="home-section-heading">
+        <span class="home-eyebrow">OUR SERVICES</span>
+        <h2 id="services-heading">End-to-end digital solutions for <em>your business</em></h2>
+        <p>From idea to execution, we design, develop and deliver technology that helps you work smarter,<br class="desktop-break"> serve better and grow faster.</p>
+      </div>
+      <div class="home-service-grid">
+        @for (service of services; track service.title; let i = $index) {
+          <a routerLink="/contact" class="home-service-card" [attr.aria-label]="'Discuss ' + service.title">
+            <img [src]="'/assets/home/service-' + serviceImages[i] + '.png'" alt="" width="64" height="63" loading="lazy">
+            <div><h3>{{ service.title }}</h3><p>{{ serviceDescriptions[i] }}</p></div>
+            <span class="home-arrow" aria-hidden="true">→</span>
+          </a>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="home-portfolio home-shell" aria-labelledby="portfolio-heading">
+    <div class="home-section-heading">
+      <span class="home-eyebrow">OUR PORTFOLIO</span>
+      <h2 id="portfolio-heading">Ideas we’ve brought to life</h2>
+      <p>A glimpse of what we do. Real products. Real impact.</p>
+    </div>
+    <div class="home-project-grid">
+      @for (project of projects; track project.title; let i = $index) {
+        <article class="home-project-card">
+          @if (project.url) {
+            <a class="home-project-link" [href]="'https://' + project.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="'Visit ' + project.title + ' (opens in a new tab)'">
+              <img [src]="'/assets/home/' + projectImages[i] + '.png'" [alt]="project.title + ' website and mobile app preview'" width="228" height="157" loading="lazy">
+              <div class="home-project-info"><h3>{{ project.title }}</h3><span>{{ project.url }} <b aria-hidden="true">→</b></span></div>
+            </a>
+          } @else {
+            <a class="home-project-link" routerLink="/portfolio">
+              <img [src]="'/assets/home/' + projectImages[i] + '.png'" [alt]="project.title + ' website and mobile app preview'" width="228" height="157" loading="lazy">
+              <div class="home-project-info home-project-private"><h3>{{ project.title }}</h3><b class="home-arrow" aria-hidden="true">→</b></div>
+            </a>
+          }
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="home-about home-shell" aria-labelledby="about-heading">
+    <img class="home-team" src="/assets/home/about-team.png" alt="Three colleagues collaborating around a laptop. People, ideas, possibilities." width="467" height="190" loading="lazy">
+    <div class="home-about-copy">
+      <span class="home-eyebrow">ABOUT US</span>
+      <h2 id="about-heading">Technology with a <em>purpose.</em></h2>
+      <p>Elite Innovates Solutions Private Limited is a technology company focused on helping businesses innovate, automate and grow. We combine creativity, engineering and strategy to build digital solutions that make a meaningful impact.</p>
+      <p>Your goals inspire our work. A smarter, more connected tomorrow drives us.</p>
+      <a routerLink="/about" class="button button-soft">Learn More About Us <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="home-contact" aria-labelledby="contact-heading">
+    <div class="home-contact-inner">
+      <div><span class="home-eyebrow">GET IN TOUCH</span><h2 id="contact-heading">Let’s build your next chapter.</h2><p>Have a project in mind? We’d love to hear from you.</p></div>
+      <div class="home-contact-details"><a [href]="'mailto:' + website.company.email"><span class="mail-icon" aria-hidden="true"></span>{{ website.company.email }}</a><p><span class="pin-icon" aria-hidden="true"></span>{{ website.company.address }}</p></div>
+      <a routerLink="/contact" class="button button-primary">Let’s Talk <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+</div>

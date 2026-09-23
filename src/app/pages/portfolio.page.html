@@ -1,0 +1,36 @@
+<div class="studio portfolio-studio">
+  <section class="portfolio-intro studio-wrap" aria-labelledby="portfolio-title">
+    <nav class="studio-breadcrumb" aria-label="Breadcrumb"><a routerLink="/">Home</a><span aria-hidden="true">/</span><span>Portfolio</span></nav>
+    <div class="portfolio-intro-grid">
+      <div class="studio-hero-copy"><span class="studio-kicker"><i aria-hidden="true"></i> SELECTED WORK / DIGITAL EXPERIENCES</span><h1 id="portfolio-title">Ideas made real.<br><em>Possibilities<br>made bigger.</em></h1><p>Wedding journeys. Smarter learning. Creative invitations. Connected business tools. A closer look at the products we’ve brought to life with our clients.</p><div class="studio-actions"><a href="/portfolio#selected-work" class="studio-button">Explore the projects <span aria-hidden="true">↓</span></a><a routerLink="/contact" class="studio-link">Build with us <span aria-hidden="true">↗</span></a></div><div class="portfolio-intro-note"><span class="portfolio-note-line"></span><span>Different industries. The same care for the experience.</span></div></div>
+      <div class="portfolio-collage" aria-label="A preview of our four featured projects">
+        <span class="collage-label">A FEW THINGS WE’VE BUILT <span aria-hidden="true">↙</span></span>
+        @for (project of projects; track project.id; let i = $index) {
+          <a href="/portfolio#selected-work" (click)="selectedCategory.set('all')" [class]="'collage-tile collage-tile-' + i" [attr.aria-label]="'Explore ' + project.title"><img [src]="'/assets/home/' + project.image + '.png'" [alt]="project.title + ' product preview'" width="228" height="157"><span>{{ project.title }} <b aria-hidden="true">↗</b></span></a>
+        }
+        <div class="collage-stamp" aria-hidden="true">Ideas.<br>People.<br><b>Possibilities.</b><span>✦</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="portfolio-domain-band"><div class="studio-wrap"><span>BUILT FOR REAL PEOPLE</span><p>Celebrations <b aria-hidden="true">✦</b> Learning <b aria-hidden="true">✦</b> Creativity <b aria-hidden="true">✦</b> Business</p><a routerLink="/services">Explore our expertise <span aria-hidden="true">↗</span></a></div></div>
+
+  <section class="studio-section studio-wrap" id="selected-work" aria-labelledby="selected-work-title">
+    <div class="studio-section-heading"><div><span class="studio-kicker">A CLOSER LOOK</span><h2 id="selected-work-title">Thoughtful products.<br><em>Distinct possibilities.</em></h2></div><p>Every product begins with a different goal. Explore the idea, the experience and the focus behind each of these four projects.</p></div>
+    <div class="portfolio-filterbar"><div class="portfolio-filters" role="group" aria-label="Filter projects by category">@for (filter of content.portfolioFilters; track filter.id) {<button type="button" [class.selected]="selectedCategory() === filter.id" [attr.aria-pressed]="selectedCategory() === filter.id" aria-controls="portfolio-results" (click)="selectedCategory.set(filter.id)">{{ filter.label }}<span>{{ categoryCount(filter.id) }}</span></button>}</div><p role="status" aria-live="polite">{{ filteredProjects().length }} {{ filteredProjects().length === 1 ? 'project' : 'projects' }}</p></div>
+    <div class="case-grid" id="portfolio-results">
+      @for (project of filteredProjects(); track project.id) {
+        <article [class]="'case-card case-' + project.color" [attr.aria-labelledby]="project.id + '-title'">
+          <div class="case-preview"><div class="case-preview-top"><span>{{ project.industry }}</span><span>{{ project.index }} / 04</span></div><img [src]="'/assets/home/' + project.image + '.png'" [alt]="project.title + ' website and app design preview'" width="228" height="157" loading="lazy"><span class="case-preview-caption">{{ project.headline }}</span></div>
+          <div class="case-body"><div class="case-title-row"><div><span class="studio-kicker">{{ project.tag }}</span><h3 [id]="project.id + '-title'">{{ project.title }}</h3></div>@if (project.url) {<a class="case-visit" [href]="'https://' + project.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="'Visit ' + project.title + ' (opens in a new tab)'">↗</a>} @else {<span class="case-private">Client product</span>}</div><p>{{ project.description }}</p><div class="studio-tags">@for (focus of project.focus; track focus) {<span>{{ focus }}</span>}</div>
+            <details class="case-details"><summary><span>Explore the project brief</span><b aria-hidden="true">+</b></summary><div class="case-brief"><div><h4>The idea</h4><p>{{ project.brief }}</p></div><div><h4>The experience</h4><p>{{ project.approach }}</p></div></div></details>
+            <div class="case-footer">@if (project.url) {<a [href]="'https://' + project.url" target="_blank" rel="noopener noreferrer">{{ project.url }} <span aria-hidden="true">↗</span><span class="studio-sr-only"> (opens in a new tab)</span></a>} @else {<a routerLink="/contact">Talk about a similar project <span aria-hidden="true">↗</span></a>}<span>{{ project.industry }}</span></div>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="portfolio-principles" aria-labelledby="principles-title"><div class="studio-wrap studio-section"><div class="studio-section-heading"><div><span class="studio-kicker">THE THINKING BEHIND THE WORK</span><h2 id="principles-title">Different projects.<br><em>A shared point of view.</em></h2></div><a routerLink="/services" class="studio-link">See how we can help <span aria-hidden="true">↗</span></a></div><div class="principle-grid">@for (principle of content.principles; track principle.number) {<article><span>{{ principle.number }}</span><h3>{{ principle.title }}</h3><p>{{ principle.copy }}</p></article>}</div></div></section>
+  <app-showcase-cta heading="Your idea could be" accent="our next collaboration." description="Tell us about the people you want to reach and the problem you want to solve. We’ll help you find a practical way forward." />
+</div>

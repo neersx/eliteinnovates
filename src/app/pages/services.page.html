@@ -1,0 +1,63 @@
+<div class="studio services-studio">
+  <section class="studio-hero services-intro" aria-labelledby="services-title">
+    <div class="studio-wrap">
+      <nav class="studio-breadcrumb" aria-label="Breadcrumb"><a routerLink="/">Home</a><span aria-hidden="true">/</span><span>Our Services</span></nav>
+      <div class="services-intro-grid">
+        <div class="studio-hero-copy">
+          <span class="studio-kicker"><i aria-hidden="true"></i> STRATEGY. DESIGN. DEVELOPMENT. GROWTH.</span>
+          <h1 id="services-title">Big ideas.<br>Better systems.<br><em>Real possibilities.</em></h1>
+          <p>Websites, apps and connected technology. Everything you need to turn your next business challenge into a more useful digital experience.</p>
+          <div class="studio-actions"><a routerLink="/contact" class="studio-button">Let’s build something <span aria-hidden="true">↗</span></a><a href="/services#capabilities" class="studio-link light-link">Explore our expertise <span aria-hidden="true">↓</span></a></div>
+          <div class="services-intro-note"><span aria-hidden="true">✦</span> From the first conversation to what comes next.</div>
+        </div>
+        <div class="services-map">
+          <div class="services-map-top"><span class="studio-kicker">ONE TEAM. CONNECTED EXPERTISE.</span><span class="map-status" aria-hidden="true"></span></div>
+          <h2>Built around<br><em>your business.</em></h2>
+          <div class="services-map-grid">
+            @for (service of services; track service.id) {
+              <a [href]="'/services#' + service.id"><img [src]="'/assets/home/service-' + service.image + '.png'" alt="" width="40" height="40"><span>{{ service.title }}</span><b aria-hidden="true">↗</b></a>
+            }
+          </div>
+          <div class="services-map-bottom"><span>Discover</span><b aria-hidden="true">→</b><span>Create</span><b aria-hidden="true">→</b><span>Connect</span><b aria-hidden="true">→</b><span>Grow</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="services-jumpbar" aria-label="Explore service categories">
+    <nav class="studio-wrap"><span>OUR EXPERTISE</span>@for (service of services; track service.id; let i = $index) {<a [href]="'/services#' + service.id"><b>0{{ i + 1 }}</b>{{ service.title }}</a>}</nav>
+  </div>
+
+  <section class="studio-section studio-wrap" id="capabilities" aria-labelledby="capabilities-title">
+    <div class="studio-section-heading"><div><span class="studio-kicker">WHAT WE CAN DO TOGETHER</span><h2 id="capabilities-title">The right expertise.<br><em>For your next move.</em></h2></div><p>Choose one focused service or connect several into a bigger picture. We shape the work around your goals, your customers and the way your team operates.</p></div>
+    <div class="expertise-grid">
+      @for (service of services; track service.id; let i = $index) {
+        <article class="expertise-card" [id]="service.id" [class.expertise-card-featured]="i === 0">
+          <div class="expertise-card-top"><img [src]="'/assets/home/service-' + service.image + '.png'" alt="" width="58" height="58" loading="lazy"><span>0{{ i + 1 }} / {{ service.label }}</span></div>
+          <h3>{{ service.title }}</h3><p class="expertise-intro">{{ service.intro }}</p><p>{{ service.description }}</p>
+          <div class="expertise-deliverables"><h4>What we can help with</h4><ul>@for (deliverable of service.deliverables; track deliverable) {<li>{{ deliverable }}</li>}</ul></div>
+          <div class="expertise-fit"><span>A GOOD FIT FOR</span><p>{{ service.bestFor }}</p></div>
+          <div class="expertise-bottom"><p>{{ service.outcome }}</p><a routerLink="/contact" class="studio-link" [attr.aria-label]="'Discuss ' + service.title">Let’s talk <span aria-hidden="true">↗</span></a></div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="delivery-section" aria-labelledby="delivery-title">
+    <div class="studio-wrap studio-section">
+      <div class="studio-section-heading"><div><span class="studio-kicker">THE WAY WE WORK</span><h2 id="delivery-title">Clear steps.<br><em>Shared direction.</em></h2></div><p>A practical path from the first question to the finished experience, with room for feedback along the way.</p></div>
+      <div class="delivery-grid">@for (step of content.process; track step.number) {<article><div class="delivery-number"><span>{{ step.number }}</span><b aria-hidden="true">↗</b></div><h3>{{ step.title }}</h3><strong>{{ step.tag }}</strong><p>{{ step.copy }}</p><div class="delivery-output"><span>TAKEAWAY</span>{{ step.deliverable }}</div></article>}</div>
+    </div>
+  </section>
+
+  <section class="studio-section studio-wrap" aria-labelledby="engagement-title">
+    <div class="studio-section-heading"><div><span class="studio-kicker">MEET YOUR BUSINESS WHERE IT IS</span><h2 id="engagement-title">Different starting points.<br><em>One thoughtful approach.</em></h2></div><a routerLink="/portfolio" class="studio-link">Explore our work <span aria-hidden="true">↗</span></a></div>
+    <div class="engagement-grid">@for (engagement of content.engagements; track engagement.number) {<article><span class="engagement-number">{{ engagement.number }}</span><h3>{{ engagement.title }}</h3><p>{{ engagement.copy }}</p><div class="studio-tags">@for (tag of engagement.tags; track tag) {<span>{{ tag }}</span>}</div></article>}</div>
+  </section>
+
+  <section class="studio-wrap services-faq" aria-labelledby="faq-title">
+    <div><span class="studio-kicker">A LITTLE MORE CLARITY</span><h2 id="faq-title">Good questions.<br><em>Useful answers.</em></h2><p>Every project starts with a conversation. Here are a few things you might be wondering.</p><a routerLink="/contact" class="studio-link">Ask us something else <span aria-hidden="true">↗</span></a></div>
+    <div class="studio-accordions">@for (faq of content.faqs; track faq.question) {<details><summary>{{ faq.question }}<span aria-hidden="true">+</span></summary><p>{{ faq.answer }}</p></details>}</div>
+  </section>
+  <app-showcase-cta heading="Your next idea deserves" accent="a great place to start." description="A new product, a better process or a fresh digital direction. Let’s work out what your business needs next." />
+</div>

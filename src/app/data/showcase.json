@@ -1,0 +1,129 @@
+{
+  "process": [
+    {
+      "number": "01",
+      "title": "Discover",
+      "tag": "Understand the right problem",
+      "copy": "We explore your goals, audience and current ways of working. Together, we define what the project needs to achieve.",
+      "deliverable": "Project brief & priorities"
+    },
+    {
+      "number": "02",
+      "title": "Design",
+      "tag": "Make the direction tangible",
+      "copy": "We translate the brief into journeys, layouts and a practical plan, so you can review the experience before development.",
+      "deliverable": "Experience direction & scope"
+    },
+    {
+      "number": "03",
+      "title": "Build",
+      "tag": "Turn the plan into a product",
+      "copy": "We develop, integrate and test the solution, with regular reviews to keep the work connected to your business needs.",
+      "deliverable": "Working product & testing"
+    },
+    {
+      "number": "04",
+      "title": "Evolve",
+      "tag": "Keep moving after launch",
+      "copy": "We plan the handover, support the launch and identify the next improvements as your team and customers start using it.",
+      "deliverable": "Launch plan & next steps"
+    }
+  ],
+  "engagements": [
+    {
+      "number": "01",
+      "title": "Start something new",
+      "copy": "Turn an early idea into a website, application or connected digital product. We help define the scope and build the first useful version.",
+      "tags": [
+        "New websites",
+        "Product launches",
+        "Custom applications"
+      ]
+    },
+    {
+      "number": "02",
+      "title": "Improve what exists",
+      "copy": "Bring clarity to a platform or process you already use. Focus on the areas that need better design, fewer manual steps or stronger connections.",
+      "tags": [
+        "Website redesigns",
+        "Integrations",
+        "Workflow improvements"
+      ]
+    },
+    {
+      "number": "03",
+      "title": "Keep your business moving",
+      "copy": "Get ongoing help with maintenance, refinements and the next stage of your digital roadmap. The support scope is agreed around your needs.",
+      "tags": [
+        "Maintenance",
+        "Product improvements",
+        "Technical guidance"
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Can you help if I only have an idea?",
+      "answer": "Yes. An early conversation can help turn an idea into a practical brief. Share the problem you want to solve, who the solution is for and any constraints you already know. We can work through priorities and the first useful version together."
+    },
+    {
+      "question": "Can I combine more than one service?",
+      "answer": "Yes. A project can connect a website, mobile application, automation and marketing work. We agree a shared scope and sequence so the different parts support the same business goal."
+    },
+    {
+      "question": "How do you decide the budget and timeline?",
+      "answer": "The scope, integrations, content and level of complexity determine the estimate. We discuss requirements first, then agree deliverables, milestones and commercial terms before work begins."
+    },
+    {
+      "question": "Can you work with our existing website or software?",
+      "answer": "We can begin by reviewing the current setup and the changes you need. That helps us understand what can be improved, which connections are possible and whether a phased approach makes sense."
+    },
+    {
+      "question": "What happens after the project launches?",
+      "answer": "We plan handover and launch as part of the engagement. Ongoing maintenance, technical support and product improvements can be scoped separately around the needs of your business."
+    },
+    {
+      "question": "What should I prepare for our first conversation?",
+      "answer": "Bring a short description of your business, the problem you want to solve and any examples you like. Existing website links, current tools, a target timeframe and a budget range are useful if you have them."
+    }
+  ],
+  "portfolioFilters": [
+    {
+      "id": "all",
+      "label": "All work"
+    },
+    {
+      "id": "web",
+      "label": "Web platforms"
+    },
+    {
+      "id": "mobile",
+      "label": "Mobile experiences"
+    },
+    {
+      "id": "ai",
+      "label": "AI & learning"
+    },
+    {
+      "id": "business",
+      "label": "Business tools"
+    }
+  ],
+  "principles": [
+    {
+      "number": "01",
+      "title": "Start with the people",
+      "copy": "Understand who will use the product, what they need to do and where the current experience gets in the way."
+    },
+    {
+      "number": "02",
+      "title": "Connect design and engineering",
+      "copy": "Bring the interface, the information and the underlying workflows together as one considered experience."
+    },
+    {
+      "number": "03",
+      "title": "Build for the next chapter",
+      "copy": "Leave room for the product to grow, with practical foundations and a clear view of what comes next."
+    }
+  ]
+}

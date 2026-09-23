@@ -20,7 +20,7 @@ Products we have developed with our Clients:
 
 Contact of Business:
 
-Email - info@eliteinnovates.com
+Email - sales@eliteinnovates.com
 Website: eliteinnovates.com
 Address: Apex Golf, Sec 1, New Delhi, INDIA
 
