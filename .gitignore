@@ -46,3 +46,11 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# VPS runtime files when the checkout is also the deployment base
+/web/
+/backup/
+/ssl/
+/.deploy.lock
+/.deployed-sha*
+/deployments/certs/*.key

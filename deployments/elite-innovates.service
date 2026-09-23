@@ -1,0 +1,35 @@
+# Angular SSR only. Shared VPS: 4000=Quizlo, 4100=another Node app,
+# 4200=DreamWedds SSR, 5000=DreamWedds API. Elite Innovates uses 4300.
+# Install/restart with deployments/deploy-script.sh; keep paths and port in
+# sync with that script and nginx.conf. See deployments/README.md.
+[Unit]
+Description=Elite Innovates Angular SSR (Node Express)
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/elite-innovates/eliteinnovates/web
+ExecStart=/usr/bin/node /var/www/elite-innovates/eliteinnovates/web/server/server.mjs
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=4300
+Environment=NG_ALLOWED_HOSTS=eliteinnovates.com,www.eliteinnovates.com
+# Must match the forwarded headers explicitly set in nginx.conf.
+Environment=NG_TRUST_PROXY_HEADERS=x-forwarded-host,x-forwarded-proto,x-forwarded-for
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillMode=control-group
+SyslogIdentifier=elite-innovates
+StandardOutput=journal
+StandardError=journal
+NoNewPrivileges=true
+PrivateTmp=true
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target
