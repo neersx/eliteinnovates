@@ -10,7 +10,7 @@ These files target the existing Linux VPS running nginx and systemd. This is a f
 | Redirected alias | `https://www.eliteinnovates.com` |
 | SSR listener | `127.0.0.1:4300` |
 | Application files | `/var/www/elite-innovates/eliteinnovates/web` |
-| Node executable | `/usr/bin/node` (Node.js 26+) |
+| Node executable | Node.js 26+ found on the deployment user’s `PATH` (or `NODE_BINARY` override) |
 | Unit | `/etc/systemd/system/elite-innovates.service` |
 | nginx vhost | `/etc/nginx/conf.d/eliteinnovates.com.conf` |
 | Default Git branch | `master` |
@@ -22,7 +22,7 @@ The repository can be cloned anywhere the deployment user can access, for exampl
 
 ## First-time setup
 
-1. Install Node.js 26 or newer at `/usr/bin/node`, npm, Git, curl, rsync and the normal Linux `ss`/`flock` utilities. nginx and systemd must be available, and the `www-data` user/group must exist. Run the script as a deployment user with sudo access and Git access to this repository.
+1. Install Node.js 26 or newer, npm, Git, curl, rsync and the normal Linux `ss`/`flock`/`runuser` utilities. nginx and systemd must be available, and the `www-data` user/group must exist. Run the script as a deployment user with sudo access and Git access to this repository. The script selects Node 26 or newer from the current `PATH` or common Ubuntu locations (`/usr/local/bin/node`, `/usr/bin/node`, `/usr/bin/nodejs`, and common Node 26 paths), uses it for npm and the build, and writes that same absolute Node path into the systemd unit. If Node 26 is installed elsewhere, set `NODE_BINARY=/absolute/path/to/node26` when running the script. That binary must be executable by `www-data`. If only an older version is installed, the script reports its version and stops before changing the running site.
 2. Point both `eliteinnovates.com` and `www.eliteinnovates.com` to the VPS. The certificate must cover both names.
 3. Install the TLS chain and its matching private key before deploying. The supplied public certificate files are in `deployments/certs/`; the private key is not included. Run from the repository root:
 
@@ -48,7 +48,7 @@ bash deployments/deploy-script.sh master
 # bash deployments/deploy-script.sh release
 ```
 
-The script fetches the selected remote branch and builds a temporary archive of that exact commit with `npm ci --include=dev` and the production build. It does not reset, rebase or switch the source checkout, so uncommitted files are not included in the deployed build.
+The script fetches the selected remote branch and builds a temporary archive of that exact commit with `npm ci --include=dev` and the production build. It does not reset, rebase or switch the source checkout, so uncommitted files are not included in the deployed build. It uses the same checked Node 26+ binary for npm scripts and the running systemd service.
 
 It then backs up the current app and its configuration, checks the candidate vhost with `nginx -t`, stops only `elite-innovates.service`, installs `dist/eliteinnovates/browser` and `dist/eliteinnovates/server`, and starts Node. There is a short restart window during activation; building happens while the previous app is running.
 

@@ -13,6 +13,7 @@ Type=simple
 User=www-data
 Group=www-data
 WorkingDirectory=/var/www/elite-innovates/eliteinnovates/web
+# This path is rewritten at deployment to the Node 26+ binary used for the build.
 ExecStart=/usr/bin/node /var/www/elite-innovates/eliteinnovates/web/server/server.mjs
 Environment=NODE_ENV=production
 Environment=HOST=127.0.0.1

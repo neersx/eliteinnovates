@@ -17,7 +17,7 @@ UNIT_FILE="/etc/systemd/system/$SERVICE"
 NGINX_FILE="/etc/nginx/conf.d/eliteinnovates.com.conf"
 DOMAIN="eliteinnovates.com"
 SSR_PORT=4300
-NODE_BINARY="/usr/bin/node"
+NODE_BINARY="${NODE_BINARY:-}"
 CERT_FILE="$BASE_DIR/ssl/eliteinnovates_com.fullchain.pem"
 KEY_FILE="$BASE_DIR/ssl/eliteinnovates_com.key"
 BUILD_DIR=""
@@ -102,11 +102,45 @@ trap 'exit 143' TERM
 [[ "$(uname -s)" == Linux ]] || die 'Run this script on the Linux VPS.'
 # The systemd unit uses this Node binary, so build with the same installation.
 export PATH="/usr/bin:/bin:$PATH"
-for command in git npm rsync tar curl ss systemctl nginx flock grep mktemp; do
+NODE_VERSION=""
+FOUND_NODE_VERSION=""
+if [[ -n "$NODE_BINARY" ]]; then
+    [[ "$NODE_BINARY" == /* ]] || die 'NODE_BINARY must be an absolute path; set NODE_BINARY=/absolute/path/to/node26.'
+    [[ -x "$NODE_BINARY" ]] || die "Node.js is not executable at $NODE_BINARY."
+    NODE_VERSION="$("$NODE_BINARY" --version 2>/dev/null || true)"
+    NODE_MAJOR="${NODE_VERSION#v}"
+    NODE_MAJOR="${NODE_MAJOR%%.*}"
+    [[ "$NODE_MAJOR" =~ ^[0-9]+$ ]] || die "Could not read the Node version from $NODE_BINARY."
+    (( NODE_MAJOR >= 26 )) || die "Found Node.js $NODE_VERSION at $NODE_BINARY; this project requires Node.js 26 or newer. Install Node.js 26, or set NODE_BINARY=/absolute/path/to/node26."
+else
+    NODE_FROM_PATH="$(type -P node || true)"
+    for candidate in "$NODE_FROM_PATH" /usr/local/bin/node /usr/bin/node /usr/bin/nodejs /usr/local/bin/node26 /usr/bin/node26 /opt/node26/bin/node; do
+        [[ -n "$candidate" && -x "$candidate" ]] || continue
+        candidate_version="$("$candidate" --version 2>/dev/null || true)"
+        candidate_major="${candidate_version#v}"
+        candidate_major="${candidate_major%%.*}"
+        [[ "$candidate_major" =~ ^[0-9]+$ ]] || continue
+        if (( candidate_major >= 26 )); then
+            NODE_BINARY="$candidate"
+            NODE_VERSION="$candidate_version"
+            break
+        fi
+        if [[ -z "$FOUND_NODE_VERSION" ]]; then
+            FOUND_NODE_VERSION="$candidate_version at $candidate"
+        fi
+    done
+    if [[ -z "$NODE_BINARY" ]]; then
+        if [[ -n "$FOUND_NODE_VERSION" ]]; then
+            die "Found Node.js $FOUND_NODE_VERSION; this project requires Node.js 26 or newer. Install Node.js 26, add it to PATH, or set NODE_BINARY=/absolute/path/to/node26."
+        fi
+        die 'Node.js was not found on PATH or in common Ubuntu install locations. Install Node.js 26 or set NODE_BINARY=/absolute/path/to/node26.'
+    fi
+fi
+# Keep npm lifecycle scripts and `#!/usr/bin/env node` on this same runtime.
+export PATH="$(dirname -- "$NODE_BINARY"):/usr/bin:/bin:$PATH"
+for command in git npm rsync tar curl ss systemctl nginx flock grep mktemp runuser; do
     command -v "$command" >/dev/null || die "Required command not found: $command"
 done
-[[ -x "$NODE_BINARY" ]] || die "Node is missing at $NODE_BINARY. Install Node.js 26 or newer."
-(( $("$NODE_BINARY" -p 'Number(process.versions.node.split(".")[0])') >= 26 )) || die 'This project requires Node.js 26 or newer.'
 if (( EUID != 0 )); then sudo -v; fi
 as_root test -s "$CERT_FILE" || die "TLS chain missing: $CERT_FILE. Follow deployments/README.md first."
 as_root test -s "$KEY_FILE" || die "TLS private key missing: $KEY_FILE. Keep the key on the VPS only."
@@ -135,11 +169,15 @@ NEW_SHA="$(git -C "$REPO_DIR" rev-parse "refs/remotes/origin/$BRANCH_NAME^{commi
 BUILD_DIR="$(mktemp -d /tmp/elite-innovates-build.XXXXXX)"
 git -C "$REPO_DIR" archive "$NEW_SHA" | tar -x -C "$BUILD_DIR"
 SERVICE_SOURCE="$BUILD_DIR/deployments/$SERVICE"
+SERVICE_RENDERED="$BUILD_DIR/$SERVICE"
 NGINX_SOURCE="$BUILD_DIR/deployments/nginx.conf"
 [[ -s "$SERVICE_SOURCE" && -s "$NGINX_SOURCE" ]] || die 'Commit and push the deployment files to the selected branch first.'
 grep -Fxq "Environment=PORT=$SSR_PORT" "$SERVICE_SOURCE" || die 'Service port does not match the script.'
 grep -Fxq "Environment=HOST=127.0.0.1" "$SERVICE_SOURCE" || die 'Service must bind to loopback.'
+grep -Eq '^ExecStart=/[^ ]*/node ' "$SERVICE_SOURCE" || die 'Service ExecStart must point to an absolute Node binary path.'
+as_root runuser -u www-data -- "$NODE_BINARY" --version >/dev/null || die "www-data cannot execute $NODE_BINARY. Install Node.js 26 somewhere accessible to the service user, such as /usr/bin/node."
 grep -Fxq "WorkingDirectory=$WEB_DEPLOY_DIR" "$SERVICE_SOURCE" || die 'Service deployment path does not match the script.'
+sed -E "s|^ExecStart=/[^ ]*/node |ExecStart=$NODE_BINARY |" "$SERVICE_SOURCE" > "$SERVICE_RENDERED"
 grep -Fq "server 127.0.0.1:$SSR_PORT;" "$NGINX_SOURCE" || die 'nginx upstream does not match the script.'
 grep -Fq "root $WEB_DEPLOY_DIR/browser;" "$NGINX_SOURCE" || die 'nginx asset directory does not match the script.'
 
@@ -178,7 +216,7 @@ as_root rsync -a --checksum --delete "$DIST_DIR/" "$WEB_DEPLOY_DIR/"
 as_root chown -R root:www-data "$WEB_DEPLOY_DIR"
 as_root find "$WEB_DEPLOY_DIR" -type d -exec chmod 755 {} +
 as_root find "$WEB_DEPLOY_DIR" -type f -exec chmod 644 {} +
-as_root install -m 644 "$SERVICE_SOURCE" "$UNIT_FILE"
+as_root install -m 644 "$SERVICE_RENDERED" "$UNIT_FILE"
 as_root systemctl daemon-reload
 as_root systemctl reset-failed "$SERVICE" || true
 as_root systemctl start "$SERVICE"
