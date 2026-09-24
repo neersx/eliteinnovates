@@ -1,0 +1,192 @@
+{
+  "site": {
+    "url": "https://eliteinnovates.com",
+    "name": "Elite Innovates",
+    "image": "/og-ai-automations.png",
+    "imageAlt": "Elite Innovates — AI Automations and connected business workflows",
+    "language": "en-IN"
+  },
+  "pages": [
+    {
+      "path": "/",
+      "title": "Web & Software Development in New Delhi | Elite Innovates",
+      "description": "Websites, custom software, mobile apps and business automation from Elite Innovates in New Delhi. Explore our services and discuss your next digital project.",
+      "heading": "Digital solutions for the way your business works",
+      "sections": [
+        {
+          "heading": "Web development, software and connected workflows",
+          "body": "Build a business website, launch a customer-facing application or connect the tools your team uses every day. Elite Innovates brings web development, mobile app development and business automation together around your goals."
+        },
+        {
+          "heading": "Start with the business problem",
+          "body": "Tell us who will use your product, what they need to accomplish and where your current process falls short. We use that context to shape the scope, user journeys and delivery priorities."
+        }
+      ],
+      "faqs": [
+        {
+          "question": "What services does Elite Innovates offer?",
+          "answer": "Our services include websites and custom software, business automation, mobile apps, WhatsApp Business management, digital marketing and IT solutions."
+        },
+        {
+          "question": "How do I discuss a project?",
+          "answer": "Visit our contact page or email sales@eliteinnovates.com with your goals, existing tools and preferred timeline."
+        }
+      ],
+      "link": "/services",
+      "linkLabel": "Explore our development services"
+    },
+    {
+      "path": "/services",
+      "title": "Web, Mobile & Automation Services | Elite Innovates",
+      "description": "Explore website development, custom software, mobile apps, business automation, WhatsApp Business, digital marketing and IT services from Elite Innovates.",
+      "heading": "Choose the right digital services for your next stage",
+      "sections": [
+        {
+          "heading": "Website and custom software development",
+          "body": "Create responsive business websites, customer portals and custom web applications. We plan navigation, content and integrations around the tasks your visitors and teams need to complete."
+        },
+        {
+          "heading": "Mobile apps and business automation",
+          "body": "Bring an idea to Android and iOS, or simplify internal work with connected systems. Automation projects can include lead routing, CRM integrations, notifications, approvals and reporting."
+        },
+        {
+          "heading": "Customer communication and ongoing improvement",
+          "body": "Connect WhatsApp Business conversations with your wider customer journey. Digital marketing and IT support can complement your product as your content, workflows and technical needs evolve."
+        }
+      ],
+      "faqs": [
+        {
+          "question": "Can a project combine several services?",
+          "answer": "Yes. A website, mobile app and internal workflow can form one project. We discuss the dependencies and agree which features should be delivered first."
+        },
+        {
+          "question": "Can you improve an existing website or application?",
+          "answer": "We can discuss maintenance, integrations, usability and performance improvements for an existing product. Share the current setup so we can assess the work required."
+        }
+      ],
+      "link": "/contact",
+      "linkLabel": "Discuss your project requirements"
+    },
+    {
+      "path": "/portfolio",
+      "title": "Web & Software Project Portfolio | Elite Innovates",
+      "description": "Explore Dream Wedds, Quizlo AI, Invita Videos and real estate sales management in the Elite Innovates web, mobile and business software portfolio.",
+      "heading": "Explore digital products across industries",
+      "sections": [
+        {
+          "heading": "Products shaped around different user needs",
+          "body": "Our portfolio includes wedding experiences with Dream Wedds, learning experiences with Quizlo AI, video invitations with Invita Videos and software for real estate sales management. Browse the work by category to find relevant examples."
+        },
+        {
+          "heading": "Turn a project example into a useful brief",
+          "body": "If a project resembles your idea, tell us which workflows, audiences or features are relevant. We can discuss the differences your product needs and the integrations that would support it."
+        }
+      ],
+      "faqs": [
+        {
+          "question": "Where can I find examples relevant to my project?",
+          "answer": "Use the portfolio filters to explore mobile experiences, business tools and AI and learning projects. Each project describes its focus and capabilities."
+        }
+      ],
+      "link": "/contact",
+      "linkLabel": "Talk about a similar project"
+    },
+    {
+      "path": "/about",
+      "title": "About Our Technology Company | Elite Innovates",
+      "description": "Meet Elite Innovates Solutions Private Limited, a New Delhi technology company working across web development, software, mobile apps and automation.",
+      "heading": "A technology partner focused on practical progress",
+      "sections": [
+        {
+          "heading": "Design and development with shared context",
+          "body": "Elite Innovates Solutions Private Limited is based in New Delhi, India. Our work connects design, engineering, automation and digital growth so that technical decisions serve a clear business purpose."
+        },
+        {
+          "heading": "Clarity throughout the project",
+          "body": "Useful collaboration starts with an understandable brief. We discuss the audience, requirements and constraints before deciding how to approach a product and its future improvements."
+        }
+      ],
+      "faqs": [],
+      "link": "/services",
+      "linkLabel": "See how we can help"
+    },
+    {
+      "path": "/contact",
+      "title": "Contact Elite Innovates | Discuss Your Digital Project",
+      "description": "Contact Elite Innovates in New Delhi to discuss a website, software, mobile app or automation project. Email your goals and requirements to our team.",
+      "heading": "Plan your next website, application or automation project",
+      "sections": [
+        {
+          "heading": "What to include in your enquiry",
+          "body": "Describe your business, the people who will use the solution and the problem you want to solve. Links to your current website, a short feature list and an outline of existing tools help us understand your requirements."
+        },
+        {
+          "heading": "Discuss scope and priorities",
+          "body": "Share your preferred launch window and any budget or technical constraints. If you are still exploring an idea, explain the outcome you want and we can discuss possible starting points. You can email sales@eliteinnovates.com directly."
+        }
+      ],
+      "faqs": [
+        {
+          "question": "Do I need a complete technical specification?",
+          "answer": "No. An outline of your goals, users and current challenges is a useful starting point. Include a detailed specification if you already have one."
+        }
+      ],
+      "link": "/portfolio",
+      "linkLabel": "Explore our work before you enquire"
+    },
+    {
+      "path": "/jobs",
+      "title": "Technology Careers in New Delhi | Elite Innovates",
+      "description": "Explore careers at Elite Innovates in New Delhi. Read role responsibilities, required skills and work arrangements, and find out how to apply.",
+      "heading": "Build useful digital products with us",
+      "sections": [
+        {
+          "heading": "Explore roles across technology and growth",
+          "body": "Review each role for its department, location, work arrangement and required skills. Our careers pages describe the work involved so you can decide where your experience is most relevant."
+        },
+        {
+          "heading": "Send a focused application",
+          "body": "Email your CV and relevant work or portfolio using the application link on the role page. Include the role title in your subject line and explain how your experience relates to the responsibilities."
+        }
+      ],
+      "faqs": [],
+      "link": "/about",
+      "linkLabel": "Learn about Elite Innovates"
+    },
+    {
+      "path": "/vision-mission",
+      "title": "Our Vision & Mission | Elite Innovates",
+      "description": "Learn how Elite Innovates approaches useful innovation, adaptable digital products and responsible delivery for growing businesses.",
+      "heading": "Technology with a clear purpose",
+      "sections": [
+        {
+          "heading": "Make digital tools useful in everyday work",
+          "body": "Our vision is to make technology practical for growing businesses. Our mission connects strategy, design and engineering to create products that address real needs and can adapt over time."
+        }
+      ],
+      "faqs": [],
+      "link": "/services",
+      "linkLabel": "Explore our approach in practice"
+    },
+    {
+      "path": "/privacy-policy",
+      "title": "Privacy Policy | Elite Innovates",
+      "description": "Read the Elite Innovates privacy policy for information about enquiries, personal data, sharing, retention and how to contact us about your privacy.",
+      "heading": "",
+      "sections": [],
+      "faqs": [],
+      "link": "/contact",
+      "linkLabel": "Contact us"
+    },
+    {
+      "path": "/terms",
+      "title": "Website Terms & Conditions | Elite Innovates",
+      "description": "Read the terms for using the Elite Innovates website, including content, intellectual property, third-party links and project agreements.",
+      "heading": "",
+      "sections": [],
+      "faqs": [],
+      "link": "/contact",
+      "linkLabel": "Contact us"
+    }
+  ]
+}

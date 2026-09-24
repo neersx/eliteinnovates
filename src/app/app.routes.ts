@@ -1,3 +1,4 @@
+import { NotFoundPage } from './pages/not-found.page';
 import { JobsPage, JobDetailsPage } from './pages/jobs.page';
 import { jobs, website } from './site.data';
 import { Routes } from '@angular/router';
@@ -17,5 +18,5 @@ export const routes: Routes = [
   { path: 'privacy-policy', component: LegalPage, data: { type: 'privacy' }, title: website.pageTitles.Privacy_Policy_Elite_Innovates },
   { path: 'terms', component: LegalPage, data: { type: 'terms' }, title: website.pageTitles.Terms_Conditions_Elite_Innovates },
   { path: 'vision-mission', component: VisionPage, title: website.pageTitles.Vision_Mission_Elite_Innovates },
-  { path: '**', redirectTo: '' }
+  { path: '**', component: NotFoundPage }
 ];

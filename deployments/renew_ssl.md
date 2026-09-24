@@ -15,7 +15,7 @@ Use this runbook on the Ubuntu server to validate and install a renewed certific
 | nginx configuration | `/etc/nginx/conf.d/eliteinnovates.com.conf` |
 | Protected backups | `/var/www/elite-innovates/ssl-backups/<timestamp>/` |
 
-The certificate currently supplied in the repository expires **April 9, 2027 at 17:27:17 UTC**. Check the renewed certificate's actual expiry during each renewal. The private key is not in Git. Obtain the matching key from the certificate request or your certificate provider if it is not already installed on the server. An unrelated new key will not work with the certificate.
+The SSL.com certificate currently supplied in the repository expires **April 10, 2027 at 06:43:17 UTC**. Check the renewed certificate's actual expiry during each renewal. `eliteinnovates.com.crt` is a self-signed certificate and must not be used as the public nginx certificate. The matching `eliteinnovates.com.key` file may exist locally in `deployments/certs`, but it is ignored by Git and will not be present in a fresh checkout. Install it at `/var/www/elite-innovates/ssl/eliteinnovates_com.key` on the server; do not commit it. An unrelated new key will not work with the SSL.com certificate.
 
 ## If the private key is lost
 

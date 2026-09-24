@@ -31,3 +31,7 @@ Content is bundled from `src/app/data/` with no database or API dependency:
 - `website.json`: company contact details, page copy, labels and page titles.
 
 After editing JSON, rebuild the app to update the client bundle and prerendered pages. Application buttons open an email draft; applications are not stored by the website.
+
+## Content and SEO
+
+Major-page SEO and guide content live in `src/app/data/seo.json`. See [the SEO editing guide](docs/seo.md) for metadata, prerendering, sitemap generation and verification.

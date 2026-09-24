@@ -53,6 +53,16 @@ It then backs up the current app, public TLS files and configuration; installs t
 
 The checks require rendered homepage, services and portfolio content using the real domain and trusted forwarded headers. The final HTTPS check goes through local nginx using `curl --resolve`, with certificate verification enabled. Only after those checks pass is the deployed commit recorded. Activation failures restore the previous app, public TLS files and configuration; a first deployment has no prior app to restore. Timestamped backups are retained for manual cleanup after successful deployments.
 
+## Simple redeploy after first setup
+
+Use `redeploy-script.sh` when the service, nginx vhost and TLS files are already installed. It fetches and rebases the checked-out branch, runs `npm ci` and a production Angular SSR build while the current site stays up, stages the build, stops only `elite-innovates.service`, replaces `/var/www/elite-innovates/web`, starts the service and checks the rendered homepage. If activation fails, it restores the previous `web` directory. It leaves the installed certificate, service unit and nginx configuration unchanged.
+
+```bash
+NODE_BINARY=/opt/node-v26.9.0/bin/node bash deployments/redeploy-script.sh master
+```
+
+The checkout must be on `master` with no uncommitted changes to tracked files before rebasing. For a different branch, check it out first and pass its name to the script. nginx does not need a reload for a code-only redeploy. If you changed the installed nginx configuration separately, set `RELOAD_NGINX=1` to validate and reload it after the service is healthy; this reloads nginx without restarting the other sites on the shared server.
+
 ## Operations
 
 ```bash
