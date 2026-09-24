@@ -18,8 +18,11 @@ NGINX_FILE="/etc/nginx/conf.d/eliteinnovates.com.conf"
 DOMAIN="eliteinnovates.com"
 SSR_PORT=4300
 NODE_BINARY="${NODE_BINARY:-}"
-CERT_FILE="$BASE_DIR/eliteinnovates/ssl/eliteinnovates_com.fullchain.pem"
-KEY_FILE="$BASE_DIR/eliteinnovates/ssl/eliteinnovates_com.key"
+SSL_DIR="$BASE_DIR/ssl"
+CERT_FILE="$SSL_DIR/eliteinnovates_com.fullchain.pem"
+LEAF_FILE="$SSL_DIR/eliteinnovates_com.crt"
+BUNDLE_FILE="$SSL_DIR/eliteinnovates_com.ca-bundle"
+KEY_FILE="$SSL_DIR/eliteinnovates_com.key"
 BUILD_DIR=""
 BACKUP_DIR=""
 CONFIG_CHANGED=false
@@ -30,6 +33,9 @@ WAS_ENABLED=false
 HAD_WEB=false
 HAD_UNIT=false
 HAD_NGINX=false
+HAD_CERT=false
+HAD_LEAF=false
+HAD_BUNDLE=false
 COMPLETED=false
 ENABLE_ATTEMPTED=false
 SHA_CHANGED=false
@@ -66,6 +72,21 @@ on_exit() {
             fi
         fi
         if $CONFIG_CHANGED; then
+            if $HAD_CERT; then
+                as_root cp -p "$BACKUP_DIR/eliteinnovates_com.fullchain.pem" "$CERT_FILE" || restored=false
+            else
+                as_root rm -f -- "$CERT_FILE" || restored=false
+            fi
+            if $HAD_LEAF; then
+                as_root cp -p "$BACKUP_DIR/eliteinnovates_com.crt" "$LEAF_FILE" || restored=false
+            else
+                as_root rm -f -- "$LEAF_FILE" || restored=false
+            fi
+            if $HAD_BUNDLE; then
+                as_root cp -p "$BACKUP_DIR/eliteinnovates_com.ca-bundle" "$BUNDLE_FILE" || restored=false
+            else
+                as_root rm -f -- "$BUNDLE_FILE" || restored=false
+            fi
             if $HAD_UNIT; then
                 as_root cp -p "$BACKUP_DIR/service" "$UNIT_FILE" || restored=false
             else
@@ -138,13 +159,11 @@ else
 fi
 # Keep npm lifecycle scripts and `#!/usr/bin/env node` on this same runtime.
 export PATH="$(dirname -- "$NODE_BINARY"):/usr/bin:/bin:$PATH"
-for command in git npm rsync tar curl ss systemctl nginx flock grep mktemp runuser; do
+for command in git npm rsync tar curl ss systemctl nginx flock grep mktemp runuser openssl; do
     command -v "$command" >/dev/null || die "Required command not found: $command"
 done
 if (( EUID != 0 )); then sudo -v; fi
-as_root test -s "$CERT_FILE" || die "TLS chain missing: $CERT_FILE. Follow deployments/README.md first."
 as_root test -s "$KEY_FILE" || die "TLS private key missing: $KEY_FILE. Keep the key on the VPS only."
-as_root nginx -t
 as_root systemctl is-active --quiet nginx || die 'nginx must already be running on this shared VPS.'
 [[ -d "$REPO_DIR/.git" || -f "$REPO_DIR/.git" ]] || die "Not a Git checkout: $REPO_DIR"
 git -C "$REPO_DIR" check-ref-format "refs/heads/$BRANCH_NAME" >/dev/null || die 'Invalid branch name.'
@@ -171,7 +190,10 @@ git -C "$REPO_DIR" archive "$NEW_SHA" | tar -x -C "$BUILD_DIR"
 SERVICE_SOURCE="$BUILD_DIR/deployments/$SERVICE"
 SERVICE_RENDERED="$BUILD_DIR/$SERVICE"
 NGINX_SOURCE="$BUILD_DIR/deployments/nginx.conf"
+LEAF_SOURCE="$BUILD_DIR/deployments/certs/eliteinnovates_com.crt"
+BUNDLE_SOURCE="$BUILD_DIR/deployments/certs/eliteinnovates_com.ca-bundle"
 [[ -s "$SERVICE_SOURCE" && -s "$NGINX_SOURCE" ]] || die 'Commit and push the deployment files to the selected branch first.'
+[[ -s "$LEAF_SOURCE" && -s "$BUNDLE_SOURCE" ]] || die 'Commit and push the public TLS certificate and CA bundle to the selected branch first.'
 grep -Fxq "Environment=PORT=$SSR_PORT" "$SERVICE_SOURCE" || die 'Service port does not match the script.'
 grep -Fxq "Environment=HOST=127.0.0.1" "$SERVICE_SOURCE" || die 'Service must bind to loopback.'
 grep -Eq '^ExecStart=/[^ ]*/node ' "$SERVICE_SOURCE" || die 'Service ExecStart must point to an absolute Node binary path.'
@@ -180,6 +202,16 @@ grep -Fxq "WorkingDirectory=$WEB_DEPLOY_DIR" "$SERVICE_SOURCE" || die 'Service d
 sed -E "s|^ExecStart=/[^ ]*/node |ExecStart=$NODE_BINARY |" "$SERVICE_SOURCE" > "$SERVICE_RENDERED"
 grep -Fq "server 127.0.0.1:$SSR_PORT;" "$NGINX_SOURCE" || die 'nginx upstream does not match the script.'
 grep -Fq "root $WEB_DEPLOY_DIR/browser;" "$NGINX_SOURCE" || die 'nginx asset directory does not match the script.'
+grep -Fq "ssl_certificate     $CERT_FILE;" "$NGINX_SOURCE" || die 'nginx certificate path does not match the script.'
+grep -Fq "ssl_certificate_key $KEY_FILE;" "$NGINX_SOURCE" || die 'nginx private key path does not match the script.'
+openssl x509 -in "$LEAF_SOURCE" -checkend 0 -noout || die 'The repository TLS certificate has expired.'
+for hostname in "$DOMAIN" "www.$DOMAIN"; do
+    openssl verify -purpose sslserver -verify_hostname "$hostname" -untrusted "$BUNDLE_SOURCE" "$LEAF_SOURCE" || die "The repository TLS certificate chain is invalid or does not cover $hostname."
+done
+CERT_PUBLIC_KEY="$(openssl x509 -in "$LEAF_SOURCE" -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256)"
+KEY_PUBLIC_KEY="$(as_root openssl pkey -in "$KEY_FILE" -pubout -outform DER | openssl dgst -sha256)"
+[[ "$CERT_PUBLIC_KEY" == "$KEY_PUBLIC_KEY" ]] || die 'The repository TLS certificate does not match the installed private key.'
+{ cat "$LEAF_SOURCE"; printf '\n'; cat "$BUNDLE_SOURCE"; } > "$BUILD_DIR/eliteinnovates_com.fullchain.pem"
 
 log "Building Angular SSR ($NEW_SHA), with the current site still running..."
 (cd "$BUILD_DIR" && npm ci --include=dev && npm run build -- --configuration production)
@@ -195,11 +227,18 @@ if as_root test -d "$WEB_DEPLOY_DIR"; then
 fi
 if as_root test -e "$UNIT_FILE"; then HAD_UNIT=true; as_root cp -p "$UNIT_FILE" "$BACKUP_DIR/service"; fi
 if as_root test -e "$NGINX_FILE"; then HAD_NGINX=true; as_root cp -p "$NGINX_FILE" "$BACKUP_DIR/nginx.conf"; fi
+if as_root test -e "$CERT_FILE"; then HAD_CERT=true; as_root cp -p "$CERT_FILE" "$BACKUP_DIR/eliteinnovates_com.fullchain.pem"; fi
+if as_root test -e "$LEAF_FILE"; then HAD_LEAF=true; as_root cp -p "$LEAF_FILE" "$BACKUP_DIR/eliteinnovates_com.crt"; fi
+if as_root test -e "$BUNDLE_FILE"; then HAD_BUNDLE=true; as_root cp -p "$BUNDLE_FILE" "$BACKUP_DIR/eliteinnovates_com.ca-bundle"; fi
 if as_root test -f "$SHA_FILE"; then as_root cp -p "$SHA_FILE" "$BACKUP_DIR/deployed-sha"; fi
 
 # Validate the new vhost against the full shared nginx configuration before
 # stopping Node. Editing the file does not affect active nginx workers yet.
 CONFIG_CHANGED=true
+as_root install -d -m 755 "$SSL_DIR"
+as_root install -m 644 "$LEAF_SOURCE" "$LEAF_FILE"
+as_root install -m 644 "$BUNDLE_SOURCE" "$BUNDLE_FILE"
+as_root install -m 644 "$BUILD_DIR/eliteinnovates_com.fullchain.pem" "$CERT_FILE"
 as_root install -m 644 "$NGINX_SOURCE" "$NGINX_FILE"
 as_root nginx -t
 

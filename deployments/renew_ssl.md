@@ -8,8 +8,10 @@ Use this runbook on the Ubuntu server to validate and install a renewed certific
 | --- | --- |
 | Renewed leaf certificate | `/var/www/elite-innovates/eliteinnovates/deployments/certs/eliteinnovates_com.crt` |
 | Renewed CA bundle | `/var/www/elite-innovates/eliteinnovates/deployments/certs/eliteinnovates_com.ca-bundle` |
-| Installed full chain | `/var/www/elite-innovates/eliteinnovates/ssl/eliteinnovates_com.fullchain.pem` |
-| Installed private key | `/var/www/elite-innovates/eliteinnovates/ssl/eliteinnovates_com.key` |
+| Installed leaf certificate | `/var/www/elite-innovates/ssl/eliteinnovates_com.crt` |
+| Installed CA bundle | `/var/www/elite-innovates/ssl/eliteinnovates_com.ca-bundle` |
+| Installed full chain | `/var/www/elite-innovates/ssl/eliteinnovates_com.fullchain.pem` |
+| Installed private key | `/var/www/elite-innovates/ssl/eliteinnovates_com.key` |
 | nginx configuration | `/etc/nginx/conf.d/eliteinnovates.com.conf` |
 | Protected backups | `/var/www/elite-innovates/ssl-backups/<timestamp>/` |
 
@@ -23,7 +25,7 @@ Run these commands on the server as a user with `sudo` access. Upload the renewe
 set -euo pipefail
 REPO_DIR=/var/www/elite-innovates/eliteinnovates
 CERT_SOURCE="$REPO_DIR/deployments/certs"
-SSL_DIR="$REPO_DIR/ssl"
+SSL_DIR=/var/www/elite-innovates/ssl
 LEAF="$CERT_SOURCE/eliteinnovates_com.crt"
 BUNDLE="$CERT_SOURCE/eliteinnovates_com.ca-bundle"
 
@@ -76,6 +78,12 @@ sudo install -d -o root -g root -m 0755 "$SSL_DIR"
 if sudo test -f "$SSL_DIR/eliteinnovates_com.fullchain.pem"; then
   sudo cp -p "$SSL_DIR/eliteinnovates_com.fullchain.pem" "$BACKUP_DIR/"
 fi
+if sudo test -f "$SSL_DIR/eliteinnovates_com.crt"; then
+  sudo cp -p "$SSL_DIR/eliteinnovates_com.crt" "$BACKUP_DIR/"
+fi
+if sudo test -f "$SSL_DIR/eliteinnovates_com.ca-bundle"; then
+  sudo cp -p "$SSL_DIR/eliteinnovates_com.ca-bundle" "$BACKUP_DIR/"
+fi
 if sudo test -f "$SSL_DIR/eliteinnovates_com.key"; then
   sudo cp -p "$SSL_DIR/eliteinnovates_com.key" "$BACKUP_DIR/"
 fi
@@ -87,6 +95,10 @@ Record the printed backup directory for rollback. If this is the first installat
 ## 4. Install and reload nginx
 
 ```bash
+sudo install -o root -g root -m 0644 "$LEAF" \
+  "$SSL_DIR/eliteinnovates_com.crt"
+sudo install -o root -g root -m 0644 "$BUNDLE" \
+  "$SSL_DIR/eliteinnovates_com.ca-bundle"
 sudo install -o root -g root -m 0644 "$TEMP_CHAIN" \
   "$SSL_DIR/eliteinnovates_com.fullchain.pem"
 if [ "$KEY_SOURCE" != "$SSL_DIR/eliteinnovates_com.key" ]; then
@@ -102,7 +114,7 @@ sudo systemctl reload nginx
 sudo systemctl status nginx --no-pager
 ```
 
-Only reload nginx if `nginx -t` succeeds. The nginx certificate paths are defined in `deployments/nginx.conf`; the deployment script checks for these same installed files before deploying the app. Keep the certificates outside `/var/www/elite-innovates/web`, which the app deployment replaces.
+Only reload nginx if `nginx -t` succeeds. The nginx certificate paths are defined in `deployments/nginx.conf`. The deployment script checks the installed key against the public certificate, then copies the public certificate and CA bundle and generates the full chain from the selected remote Git commit. Commit and push renewed public certificate files before running that script, or it will restore the older public certificate. Keep the certificates outside `/var/www/elite-innovates/web`, which the app deployment replaces.
 
 ## 5. Verify the certificate served locally
 
@@ -134,6 +146,10 @@ If validation or the HTTPS checks fail after installation, restore the files fro
 ```bash
 sudo cp -p "$BACKUP_DIR/eliteinnovates_com.fullchain.pem" \
   "$SSL_DIR/eliteinnovates_com.fullchain.pem"
+sudo cp -p "$BACKUP_DIR/eliteinnovates_com.crt" \
+  "$SSL_DIR/eliteinnovates_com.crt"
+sudo cp -p "$BACKUP_DIR/eliteinnovates_com.ca-bundle" \
+  "$SSL_DIR/eliteinnovates_com.ca-bundle"
 sudo cp -p "$BACKUP_DIR/eliteinnovates_com.key" \
   "$SSL_DIR/eliteinnovates_com.key"
 sudo nginx -t
