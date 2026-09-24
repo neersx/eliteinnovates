@@ -9,16 +9,16 @@ These files target the existing Linux VPS running nginx and systemd. This is a f
 | Canonical website | `https://eliteinnovates.com` |
 | Redirected alias | `https://www.eliteinnovates.com` |
 | SSR listener | `127.0.0.1:4300` |
-| Application files | `/var/www/elite-innovates/eliteinnovates/web` |
+| Application files | `/var/www/elite-innovates/web` |
 | Node executable | Node.js 26+ found on the deployment user’s `PATH` (or `NODE_BINARY` override) |
 | Unit | `/etc/systemd/system/elite-innovates.service` |
 | nginx vhost | `/etc/nginx/conf.d/eliteinnovates.com.conf` |
 | Default Git branch | `master` |
-| Backups | `/var/www/elite-innovates/eliteinnovates/backup/<timestamp>-<commit>-<pid>` |
+| Backups | `/var/www/elite-innovates/backup/<timestamp>-<commit>-<pid>` |
 
 Ports 4000, 4100, 4200 and 5000 belong to the other applications. Port 4300 is a proposed allocation; the script checks it on the VPS and refuses to kill an existing process. Change the port in **all three deployment files** if 4300 is already allocated.
 
-The repository can be cloned anywhere the deployment user can access, for example `/var/www/elite-innovates/eliteinnovates`. The script finds its repository from its own location. nginx serves files from the deployed `web/browser` directory, never from the source checkout.
+The repository is at `/var/www/elite-innovates/eliteinnovates`. The script finds its repository from its own location. The built browser and server files are deployed to `/var/www/elite-innovates/web`; nginx serves files from its `browser` directory. The TLS files remain in `/var/www/elite-innovates/eliteinnovates/ssl`, outside the replaced web directory.
 
 ## First-time setup
 
@@ -36,6 +36,8 @@ The repository can be cloned anywhere the deployment user can access, for exampl
    ```
 
    Replace `/path/to/your/private-key.key` with the actual key location. Keep private keys outside Git. If you use a different certificate location or a renewal tool, update the nginx certificate paths and script preflight paths together. Deployments do not overwrite TLS files.
+
+   For subsequent renewals, follow [renew_ssl.md](renew_ssl.md).
 
 4. Ensure `/etc/nginx/nginx.conf` includes `/etc/nginx/conf.d/*.conf` inside its `http` block, as in the reference application. If an Elite Innovates vhost already exists in `sites-enabled` or under another filename, consolidate it before running this script so there is only one vhost for these names. Leave the other applications' vhosts in place.
 5. Commit and push these files **and the `src/server.ts` loopback change** to the branch you intend to deploy.

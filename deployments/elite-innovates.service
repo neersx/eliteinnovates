@@ -2,6 +2,14 @@
 # 4200=DreamWedds SSR, 5000=DreamWedds API. Elite Innovates uses 4300.
 # Install/restart with deployments/deploy-script.sh; keep paths and port in
 # sync with that script and nginx.conf. See deployments/README.md.
+
+# sudo cp src/deployments/elite-innovates.service /etc/systemd/system/elite-innovates.service
+# sudo systemctl daemon-reload && sudo systemctl enable --now elite-innovates.service
+
+# sudo systemctl stop elite-innovates.service
+# sudo systemctl start elite-innovates.service
+
+
 [Unit]
 Description=Elite Innovates Angular SSR (Node Express)
 After=network.target
@@ -12,9 +20,9 @@ StartLimitBurst=5
 Type=simple
 User=www-data
 Group=www-data
-WorkingDirectory=/var/www/elite-innovates/eliteinnovates/web
+WorkingDirectory=/var/www/elite-innovates/web
 # This path is rewritten at deployment to the Node 26+ binary used for the build.
-ExecStart=/usr/bin/node /var/www/elite-innovates/eliteinnovates/web/server/server.mjs
+ExecStart=/usr/bin/node /var/www/elite-innovates/web/server/server.mjs
 Environment=NODE_ENV=production
 Environment=HOST=127.0.0.1
 Environment=PORT=4300

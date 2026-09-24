@@ -8,7 +8,7 @@ set -Eeuo pipefail
 
 BRANCH_NAME="${1:-master}"
 REPO_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
-BASE_DIR="/var/www/elite-innovates/eliteinnovates"
+BASE_DIR="/var/www/elite-innovates"
 WEB_DEPLOY_DIR="$BASE_DIR/web"
 BACKUP_ROOT="$BASE_DIR/backup"
 SHA_FILE="$BASE_DIR/.deployed-sha"
@@ -18,8 +18,8 @@ NGINX_FILE="/etc/nginx/conf.d/eliteinnovates.com.conf"
 DOMAIN="eliteinnovates.com"
 SSR_PORT=4300
 NODE_BINARY="${NODE_BINARY:-}"
-CERT_FILE="$BASE_DIR/ssl/eliteinnovates_com.fullchain.pem"
-KEY_FILE="$BASE_DIR/ssl/eliteinnovates_com.key"
+CERT_FILE="$BASE_DIR/eliteinnovates/ssl/eliteinnovates_com.fullchain.pem"
+KEY_FILE="$BASE_DIR/eliteinnovates/ssl/eliteinnovates_com.key"
 BUILD_DIR=""
 BACKUP_DIR=""
 CONFIG_CHANGED=false
