@@ -17,6 +17,25 @@ Use this runbook on the Ubuntu server to validate and install a renewed certific
 
 The certificate currently supplied in the repository expires **April 9, 2027 at 17:27:17 UTC**. Check the renewed certificate's actual expiry during each renewal. The private key is not in Git. Obtain the matching key from the certificate request or your certificate provider if it is not already installed on the server. An unrelated new key will not work with the certificate.
 
+## If the private key is lost
+
+The current certificate cannot be used without the private key created with its original certificate signing request. [SSL.com advises re-keying](https://www.ssl.com/faqs/what-do-i-do-if-ive-lost-my-private-key/) a certificate with a new private key and CSR when the key is lost. Do this before the renewal steps below:
+
+```bash
+sudo install -d -o root -g root -m 0755 /var/www/elite-innovates/ssl
+sudo openssl req -new -newkey rsa:3072 -nodes \
+  -keyout /var/www/elite-innovates/ssl/eliteinnovates_com.key \
+  -out /var/www/elite-innovates/ssl/eliteinnovates_com.csr \
+  -subj '/CN=eliteinnovates.com' \
+  -addext 'subjectAltName=DNS:eliteinnovates.com,DNS:www.eliteinnovates.com'
+sudo chown root:root /var/www/elite-innovates/ssl/eliteinnovates_com.key
+sudo chmod 0600 /var/www/elite-innovates/ssl/eliteinnovates_com.key
+sudo openssl req -in /var/www/elite-innovates/ssl/eliteinnovates_com.csr \
+  -noout -text | grep -A 2 'Subject Alternative Name'
+```
+
+Submit **only the `.csr` file** through the certificate order's re-key/reissue flow with SSL.com or the provider that manages the order. Confirm that the new certificate covers both hostnames. Keep the `.key` file on the server and never upload it to the certificate provider or commit it to Git. When the new leaf certificate and CA bundle arrive, replace the two public files in `deployments/certs`, commit and push them to the branch used for deployment, and then follow the verification and installation steps below. The old `.crt` file will not match this new key.
+
 ## 1. Prepare and inspect the renewed files
 
 Run these commands on the server as a user with `sudo` access. Upload the renewed leaf certificate and CA bundle to the paths above. Keep a new private key in a protected server location outside Git; when renewing with the existing key, use the installed key.
